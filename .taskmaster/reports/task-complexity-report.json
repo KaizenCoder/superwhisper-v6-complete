@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "generatedAt": "2025-06-10T09:53:10.860Z",
+    "tasksAnalyzed": 12,
+    "totalTasks": 12,
+    "analysisCount": 12,
+    "thresholdScore": 5,
+    "projectName": "Taskmaster",
+    "usedResearch": false
+  },
+  "complexityAnalysis": [
+    {
+      "taskId": 1,
+      "taskTitle": "Setup Project Repository",
+      "complexityScore": 6,
+      "recommendedSubtasks": 2,
+      "expansionPrompt": "Configure repository to use a secure connection.",
+      "reasoning": "Repository setup and dependency installation require attention to detail."
+    },
+    {
+      "taskId": 2,
+      "taskTitle": "Define Project Structure",
+      "complexityScore": 7,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Create symbolic links for the directory structure.",
+      "reasoning": "Directory structure creation requires careful planning and execution."
+    },
+    {
+      "taskId": 3,
+      "taskTitle": "Install Framework and Libraries",
+      "complexityScore": 8,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Configure the framework and libraries to use the project's directory structure.",
+      "reasoning": "Framework and library installation requires attention to dependencies."
+    },
+    {
+      "taskId": 4,
+      "taskTitle": "Configure Database",
+      "complexityScore": 8,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Create tables as needed using sequelize migrate:create.",
+      "reasoning": "Database configuration requires careful setup and testing."
+    },
+    {
+      "taskId": 5,
+      "taskTitle": "Implement Authentication",
+      "complexityScore": 9,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Configure the authentication middleware to use the project's directory structure.",
+      "reasoning": "Authentication implementation requires careful configuration and testing."
+    },
+    {
+      "taskId": 6,
+      "taskTitle": "Implement Data Access",
+      "complexityScore": 9,
+      "recommendedSubtasks": 7,
+      "expansionPrompt": "Create routes for data access using express.Router.",
+      "reasoning": "Data access implementation requires careful setup and testing."
+    },
+    {
+      "taskId": 7,
+      "taskTitle": "Implement API Endpoints",
+      "complexityScore": 9,
+      "recommendedSubtasks": 8,
+      "expansionPrompt": "Configure the API middleware to use the project's directory structure.",
+      "reasoning": "API endpoint implementation requires careful configuration and testing."
+    },
+    {
+      "taskId": 8,
+      "taskTitle": "Implement Frontend",
+      "complexityScore": 9,
+      "recommendedSubtasks": 9,
+      "expansionPrompt": "Configure the frontend to use the project's directory structure.",
+      "reasoning": "Frontend implementation requires careful setup and testing."
+    },
+    {
+      "taskId": 9,
+      "taskTitle": "Implement Testing Framework",
+      "complexityScore": 8,
+      "recommendedSubtasks": 10,
+      "expansionPrompt": "Configure the testing framework to use the project's directory structure.",
+      "reasoning": "Testing framework implementation requires careful setup and testing."
+    },
+    {
+      "taskId": 10,
+      "taskTitle": "Implement Deployment",
+      "complexityScore": 8,
+      "recommendedSubtasks": 11,
+      "expansionPrompt": "Configure deployment scripts using docker-compose.",
+      "reasoning": "Deployment implementation requires careful setup and testing."
+    },
+    {
+      "taskId": 11,
+      "taskTitle": "Implement Monitoring",
+      "complexityScore": 8,
+      "recommendedSubtasks": 12,
+      "expansionPrompt": "Configure monitoring scripts using prometheus.",
+      "reasoning": "Monitoring implementation requires careful setup and testing."
+    },
+    {
+      "taskId": 12,
+      "taskTitle": "Implement Security",
+      "complexityScore": 9,
+      "recommendedSubtasks": 13,
+      "expansionPrompt": "Configure security scripts using openssl.",
+      "reasoning": "Security implementation requires careful setup and testing."
+    }
+  ]
+}

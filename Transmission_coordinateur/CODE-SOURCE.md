@@ -1,6 +1,6 @@
 # 💻 CODE SOURCE COMPLET - Luxa
 
-**Dernière Mise à Jour** : 2024-01-XX  
+**Dernière Mise à Jour** : 2025-06-10  
 **Projet** : Luxa - SuperWhisper V6 Assistant  
 **Repository** : https://github.com/KaizenCoder/luxa-superwhisper-v6
 

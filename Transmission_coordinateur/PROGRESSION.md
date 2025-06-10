@@ -1,6 +1,6 @@
 # 📈 PROGRESSION DÉTAILLÉE - Luxa
 
-**Dernière Mise à Jour** : 2024-01-XX  
+**Dernière Mise à Jour** : 2025-06-10  
 **Période de Reporting** : Quotidienne  
 **Responsable Suivi** : Équipe Développement
 
@@ -279,6 +279,6 @@ Issues/Sprint  : 12-15 (estimation)
 
 ---
 
-**Prochain Update** : 2024-01-XX+1  
+**Prochain Update** : 2025-06-10+1  
 **Fréquence** : Quotidienne  
 **Format** : Markdown (.md) 

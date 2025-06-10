@@ -1,6 +1,6 @@
 # 🏗️ ARCHITECTURE TECHNIQUE - Luxa
 
-**Dernière Mise à Jour** : 2024-01-XX  
+**Dernière Mise à Jour** : 2025-06-10  
 **Version Architecture** : v1.0  
 **Responsable** : Équipe Architecture
 
