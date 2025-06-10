@@ -1,0 +1,20 @@
+# requirements.txt
+# Dépendances pour LUXA MVP P0 - Assistant Vocal
+
+# STT (Speech-to-Text) avec Whisper via transformers
+transformers
+torch --index-url https://download.pytorch.org/whl/cu118
+
+# LLM (Large Language Model)
+llama-cpp-python
+
+# TTS (Text-to-Speech) avec Microsoft Neural Voices
+edge-tts
+
+# Capture et traitement audio
+sounddevice
+soundfile
+numpy
+
+# Configuration YAML
+pyyaml 

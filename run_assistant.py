@@ -11,9 +11,13 @@ import asyncio
 import os
 import sys
 from pathlib import Path
+import yaml
+from STT.stt_handler import STTHandler
+from LLM.llm_handler import LLMHandler
+from TTS.tts_handler import TTSHandler
 
-# Ajouter le répertoire racine au path
-sys.path.append(str(Path(__file__).parent))
+# Ajouter le répertoire courant au PYTHONPATH pour les imports
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from Orchestrator.master_handler_robust import RobustMasterHandler
 import numpy as np
@@ -150,50 +154,64 @@ def print_banner():
     """
     print(banner)
 
-async def main():
-    """Point d'entrée principal"""
-    
-    # Bannière
-    print_banner()
-    print("🚀 LUXA v1.1 - Démarrage...")
-    print("=" * 50)
-    
-    # Arguments
-    args = parse_arguments()
-    
-    # Configuration debug
-    if args.debug:
-        import logging
-        logging.basicConfig(level=logging.DEBUG)
-        print("🐛 Mode debug activé")
-    
-    # Variables d'environnement
-    gpu_map = os.getenv("LUXA_GPU_MAP", "3090:0,4060:1")
-    print(f"🎮 Configuration GPU: {gpu_map}")
+def main():
+    """Fonction principale pour exécuter la boucle de l'assistant."""
+    print("🚀 Démarrage de l'assistant vocal LUXA (MVP P0)...")
+
+    # 1. Charger la configuration
+    try:
+        with open("Config/mvp_settings.yaml", 'r') as f:
+            config = yaml.safe_load(f)
+    except FileNotFoundError:
+        print("❌ ERREUR: Le fichier 'Config/mvp_settings.yaml' est introuvable.")
+        return
+
+    # 2. Initialiser les modules
+    try:
+        print("🔧 Initialisation des modules...")
+        stt_handler = STTHandler(config['stt'])
+        llm_handler = LLMHandler(config['llm'])
+        tts_handler = TTSHandler(config['tts'])
+        print("✅ Tous les modules sont initialisés!")
+    except Exception as e:
+        print(f"❌ ERREUR lors de l'initialisation: {e}")
+        print(f"   Détails: {str(e)}")
+        return
+
+    # 3. Boucle principale de l'assistant
+    print("\n🎯 Assistant vocal LUXA prêt!")
+    print("Appuyez sur Ctrl+C pour arrêter")
     
     try:
-        # Initialiser le gestionnaire principal
-        print("🔧 Initialisation du gestionnaire principal...")
-        handler = RobustMasterHandler(config_path=args.config)
-        await handler.initialize()
-        
-        print("✅ Luxa initialisé avec succès!")
-        
-        # Lancer le mode approprié
-        if args.mode == "cli":
-            await run_cli_mode(handler)
-        elif args.mode == "web":
-            await run_web_mode(handler, args.port)
-        elif args.mode == "api":
-            await run_api_mode(handler, args.port)
+        while True:
+            print("\n" + "="*50)
+            input("Appuyez sur Entrée pour commencer l'écoute...")
             
+            # Pipeline STT → LLM → TTS
+            try:
+                # 1. Écouter et transcrire
+                transcription = stt_handler.listen_and_transcribe(duration=5)
+                
+                if transcription.strip():
+                    print(f"📝 Transcription: '{transcription}'")
+                    
+                    # 2. Générer une réponse
+                    response = llm_handler.get_response(transcription)
+                    
+                    if response.strip():
+                        # 3. Prononcer la réponse
+                        tts_handler.speak(response)
+                    else:
+                        print("⚠️ Le LLM n'a pas généré de réponse.")
+                else:
+                    print("⚠️ Aucune parole détectée, réessayez.")
+                    
+            except Exception as e:
+                print(f"❌ Erreur dans le pipeline: {e}")
+                continue
+                
     except KeyboardInterrupt:
-        print("\n🛑 Arrêt demandé par l'utilisateur")
-    except Exception as e:
-        print(f"❌ Erreur fatale: {e}")
-        sys.exit(1)
-    finally:
-        print("🧹 Nettoyage en cours...")
+        print("\n🛑 Arrêt de l'assistant vocal LUXA")
 
 if __name__ == "__main__":
-    asyncio.run(main()) 
+    main() 
