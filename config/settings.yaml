@@ -1,0 +1,160 @@
+# Configuration Luxa v1.1 - Assistant Vocal Intelligent
+# =======================================================
+
+luxa:
+  # Métadonnées projet
+  project:
+    name: "Luxa - SuperWhisper_V6"
+    version: "1.1.0"
+    description: "Assistant vocal intelligent avec modules STT, LLM, TTS"
+    
+  # Mapping GPU dynamique
+  gpu_mapping:
+    mode: "auto"  # auto, manual, env
+    manual_map:
+      llm: 0      # GPU principal pour LLM (RTX 3090)
+      stt: 1      # GPU secondaire pour STT (RTX 4060)
+      tts: 1      # Partage GPU STT
+    env_variable: "LUXA_GPU_MAP"  # Format: "3090:0,4060:1"
+    
+  # Seuils de performance critiques
+  performance_thresholds:
+    stt_latency_ms: 250        # Seuil acceptable STT
+    llm_first_token_ms: 500    # Premier token LLM
+    tts_latency_ms: 100        # Synthèse vocale
+    pipeline_total_ms: 1200    # Pipeline complet
+    vad_latency_ms: 25         # VAD temps réel
+    
+  # Configuration modèles
+  models:
+    stt:
+      primary: "large-v3"
+      fallback: "base" 
+      backend: "faster-whisper"  # faster-whisper, insanely-fast-whisper
+      compute_type: "int8_float16"
+      chunk_length_s: 30
+      batch_size: 4
+      beam_size: 1
+      
+    llm:
+      primary: "llama-2-13b-chat.Q5_K_M.gguf"
+      fallback: "phi-2.gguf"
+      max_vram_gb: 20
+      context_length: 4096
+      max_tokens: 512
+      temperature: 0.7
+      top_p: 0.9
+      
+    tts:
+      primary: "xtts-v2"
+      fallback: "espeak"
+      voice: "fr-FR"
+      speed: 1.0
+      pitch: 0.0
+      
+  # Configuration VAD (Voice Activity Detection)
+  vad:
+    chunk_ms: 160              # Fenêtre analyse (160ms = temps réel)
+    latency_threshold_ms: 25   # Seuil basculement
+    backend_priority: ["silero", "webrtc", "none"]
+    silero_threshold: 0.5      # Seuil détection Silero
+    webrtc_mode: 3             # Mode agressif WebRTC
+    
+  # Pipeline audio
+  audio:
+    sample_rate: 16000         # Fréquence échantillonnage
+    channels: 1                # Mono
+    chunk_duration_ms: 160     # Chunks temps réel
+    buffer_duration_s: 5       # Buffer audio
+    noise_reduction: true
+    auto_gain_control: true
+    
+  # Monitoring et observabilité  
+  monitoring:
+    prometheus_port: 8000
+    update_interval_s: 1
+    health_check_port: 8001
+    log_level: "INFO"          # DEBUG, INFO, WARNING, ERROR
+    metrics_retention_hours: 24
+    
+  # Fallbacks et resilience
+  fallback_triggers:
+    stt:
+      latency_ms: 500
+      vram_threshold_gb: 2.0
+      error_threshold: 3
+      
+    llm:
+      latency_ms: 2000
+      vram_threshold_gb: 4.0
+      error_threshold: 2
+      
+    tts:
+      latency_ms: 1000
+      vram_threshold_gb: 1.0
+      error_threshold: 3
+      
+  # Interface utilisateur
+  interface:
+    mode: "cli"                # cli, web, api
+    wake_word: "Luxa"
+    response_timeout_s: 30
+    conversation_history: 10
+    
+  # Sécurité et limites
+  security:
+    max_audio_duration_s: 300  # 5 minutes max
+    rate_limit_requests_per_minute: 60
+    allowed_audio_formats: ["wav", "mp3", "flac"]
+    sanitize_inputs: true
+    
+  # Optimisations
+  optimizations:
+    enable_mixed_precision: true
+    enable_graph_optimization: true
+    cache_models: true
+    preload_models: false
+    gc_frequency_requests: 100
+
+# Configuration développement/debug
+development:
+  debug_mode: false
+  profile_performance: false
+  save_intermediate_outputs: false
+  verbose_logging: false
+  test_mode: false
+
+# Configuration fallbacks détaillée
+fallback_config:
+  stt:
+    primary: "large-v3"
+    fallback: "base"
+    trigger:
+      - type: "latency"
+        threshold_ms: 500
+      - type: "vram" 
+        threshold_gb: 2.0
+      - type: "exception"
+        exception: "OutOfMemoryError"
+        
+  llm:
+    primary: "llama-2-13b-chat.Q5_K_M.gguf"
+    fallback: "phi-2.gguf"
+    trigger:
+      - type: "latency"
+        threshold_ms: 2000
+      - type: "vram"
+        threshold_gb: 4.0
+      - type: "exception"
+        exception: "OutOfMemoryError"
+        
+  tts:
+    primary: "xtts-v2"
+    fallback: "espeak"
+    trigger:
+      - type: "latency"
+        threshold_ms: 1000
+      - type: "vram"
+        threshold_gb: 1.0
+      - type: "exception"
+        exception: "OutOfMemoryError" 
